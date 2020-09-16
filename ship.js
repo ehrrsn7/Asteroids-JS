@@ -132,6 +132,7 @@ class Ship extends Projectile {
         this.exploded = false
         this.blinkingTimer = 0
         this.dv = new Velocity()
+        this.health = 3
 
         debug("ship constructor called.")
     }
