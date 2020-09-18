@@ -11,7 +11,7 @@
     <body style="background-color:rgb(27, 27, 27)">
         <!-- Set up screen as HTML canvas -->
         <canvas id="gameCanvas" width="700" height="500">
-
+            
             <!-- import resources -->
             <!-- images -->
             <img id="backgroundStars"   width="700" height="500" src="stars.png" alt="stars">
@@ -23,12 +23,12 @@
             <img id="projImg"           width="25"  height="25" src="projectile_img_default.png" alt="projectile">
             <img id="bigRock"           width="100" height="100" src="bigAsteroid.png" alt="large asteroid">
             <img id="mediumRock"        width="60"  height="60" src="mediumAsteroid.png" alt="medium asteroid">
-
+            
             <!-- import game object classes -->
             <script>
                 const DEBUG = true;
                 function debug(input) { if (DEBUG) {console.log("debug:", input)} }
-            </script>
+                </script>
             <script src="draw.js"></script>                 <!-- drawing functions used program-wide -->
             <script src="projectile.js"></script>           <!-- Point, Velocity and Projectile classes -->
             <script src="laser.js"></script>                <!-- Laser class -->
@@ -37,7 +37,7 @@
             <script src="JavaScript_KeyCodes.js"></script>  <!-- Global Constants -->
             <script src="gamestate.js"></script>            <!-- Gamestate -->
             <script src="asteroids.js"></script>            <!-- GAME -->
-
+            
             <!-- Run asteroids game -->
             <script src="init.js"></script>
             <script src="handle_input.js"></script>
