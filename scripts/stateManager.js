@@ -1,4 +1,7 @@
+import draw from "./draw.js"
 import Dimensions from "./misc scripts/dimensions.js"
+import GameObject from "./misc scripts/gameObject.js"
+import Point from "./misc scripts/point.js"
 
 // helper class
 class state {
@@ -56,7 +59,7 @@ class SettingsState  extends Scene {
 
 // state manager module
 const stateManager = {
-    currentState : 2,
+    currentState : 0,
     get state() { return this.states[this.currentState] },
     states : [
         new state("resume",         new Resume()),
@@ -67,3 +70,30 @@ const stateManager = {
 }
 
 export default stateManager
+
+
+// ship lives
+class ShipLife extends GameObject {
+    constructor(x) {
+        super()
+        this.name = "ship life"
+        this.p = new Point(x, 20)
+        this.r = 10
+        this.a = 0
+    }
+
+    display() {
+        super.display()
+        draw.triangle(this.p, this.r, this.a)
+    }
+}
+
+export function loadShipLives(n) {
+    var newLivesArray = []
+    for (var i = 1; i < n + 1; i++) {
+        newLivesArray.push(
+            new ShipLife(i * 30)
+        )
+    }
+    return newLivesArray
+}

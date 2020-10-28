@@ -1,6 +1,7 @@
 // import
 import  math    from "./misc scripts/math.js"
 import  debug   from "./misc scripts/debug.js";
+import stateManager from "./stateManager.js";
 const   bodyTag = document.querySelector("body")
 const   canvas  = document.querySelector("canvas")
 const   context = canvas.getContext("2d")
@@ -49,10 +50,34 @@ cssGetter: function(element, varName) {
     return getComputedStyle(element).getPropertyValue(varName)
 },
 
-colorDark: "white",
-colorLight: "black",
-get color()       { return this.darkMode ? this.colorDark : this.colorLight },
-get canvasColor() { return this.darkMode ? this.colorLight : this.colorDark },
+colors: {
+    darkMode: {
+        color: "white",
+        pauseColor: "rgb(230, 230, 230)",
+        background: "black",
+        pauseBackground: "rgb(20, 20, 20)"
+    },
+    lightMode: {
+        color: "black",
+        pauseColor: "rgb(20, 20, 20)",
+        background: "white",
+        pauseBackground: "rgb(230, 230, 230)"
+    }
+},
+
+get color()       {
+    if (stateManager.currentState == 2)
+        return this.darkMode ? this.colors.darkMode.pauseColor : this.colors.lightMode.pauseColor
+    else
+        return this.darkMode ? this.colors.darkMode.color : this.colors.lightMode.color
+},
+
+get canvasColor()       {
+    if (stateManager.currentState == 2)
+        return this.darkMode ? this.colors.darkMode.pauseBackground : this.colors.lightMode.pauseBackground
+    else
+        return this.darkMode ? this.colors.darkMode.background : this.colors.lightMode.background
+},
 
 fillBackground: function() {
     context.fillStyle = this.canvasColor
@@ -62,15 +87,17 @@ fillBackground: function() {
 triangle: function(
     p,  // point
     sl, // side length
-    a   // angle (radians)
+    a,  // angle (radians)
+    color="unspecified",
+    thickness=1.75
 ) {
 
     a += math.rad(90)
-    // p = new Point(canvas.width / 2, canvas.height / 2)
+    if (color == "unspecified") color = this.color
 
     // draw a triangular ship
-    context.strokeStyle = this.color
-    context.lineWidth = sl / 5
+    context.strokeStyle = color
+    context.lineWidth = thickness
     context.beginPath()
     context.moveTo(
         // (jump to) nose of the ship
@@ -91,15 +118,18 @@ triangle: function(
     context.stroke()
 },
 
-circle: function(p, r, fill=false) {
-    context.strokeStyle = this.color
-    context.fillStyle   = this.color
-    context.lineWidth   = r
+showBounding: false,
+
+circle: function(p, r, fill=false, color="unspecified") {
+    if (color == "unspecified") color = this.color
+    context.strokeStyle = color
+    if (fill) context.fillStyle = color
+    context.lineWidth = 1.5
     context.beginPath()
     context.arc(p.x, p.y, r, 0, math.rad(360), false)
     context.closePath()
     context.stroke()
-    context.fill()
+    if (fill) context.fill()
 },
 
 point: function(x, y) {
@@ -116,6 +146,7 @@ rock: function(x, y, r, a, vertices, color="slategrey") {
     // update draw info to draw rock
     context.strokeStyle = "slategrey"
     context.lineWidth   = 1.5
+    context.fillStyle   = this.canvasColor
 
     // draw a path
     context.beginPath();
@@ -136,6 +167,7 @@ rock: function(x, y, r, a, vertices, color="slategrey") {
     // tell canvas to paint the paths
     context.closePath();
     context.stroke();
+    context.fill()
 }
 
 }

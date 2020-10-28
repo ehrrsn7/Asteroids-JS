@@ -1,6 +1,10 @@
+import FPS          from "../main.js"
 import debug        from "./debug.js"
 import GameObject   from "./gameObject.js"
+import Time         from "./time.js"
 import Velocity     from "./velocity.js"
+
+const ROTATION_AMOUNT = 7
 
 class Projectile extends GameObject {
     constructor() {
@@ -21,16 +25,16 @@ class Projectile extends GameObject {
         this.point.translate(this.velocity)
     }
 
-    rotate(dr)      { this.rotation -= dr               }
-    rotateRight()   { this.rotate(this.rotationAmount)  }
-    rotateLeft()    { this.rotate(-this.rotationAmount) }
-    rotationAmount = .1
+    rotate(dr)      { this.rotation -= dr * Time.deltaTime  }
+    rotateRight()   { this.rotate(ROTATION_AMOUNT)          }
+    rotateLeft()    { this.rotate(-ROTATION_AMOUNT)          }
 
     accelerate(angle, amount, thrust) {
+        amount *= 20
         if (thrust)
             this.velocity.add(this.velocity.forward(angle, amount))
         else
-            this.applyFriction(amount / 10)
+            this.applyFriction(amount / 50000)
     }
 
     applyFriction(amount) {
