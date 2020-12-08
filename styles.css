@@ -1,62 +1,45 @@
-:root {
-    --background-color-dark: rgb(30, 35, 40);
-    --canvas-color-dark: rbg(20, 20, 20);
-    --color-dark: "white";
-
-    --background-color-light: rgb(200, 205, 210);
-    --canvas-color-light: rbg(210, 210, 210);
-    --color-light: "black";
-
-    --background-color: var(--background-color-dark);
-    --canvas-color: var(--canvas-color-dark);
-    --color: var(--color-dark);
-}
-
-.dark-mode {
-    background-color: var(--background-color-dark);
-    color: var(--color-dark);
-    --canvas-color: var(--canvas-color-dark);
-}
-
-
-.light-mode {
-    background-color: var(--background-color-light);
-    color: var(--color-light);
-    --canvas-color: var(--canvas-color-light);
-}
-
-
+html,
 body {
-    padding: .5em;
-    padding-left: 2em;
-    background-color: var(--background-color);
-    color: var(--color);
-    --canvas-color: var(--canvas-color);
+    background-color: rgb(103, 137, 148);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 0 0 1em 0 rgb(0, 0, 0);
+}
+
+header,
+canvas {
+    /* positioning: center */
+    display: flex;
+    justify-content: center;
+    text-align: left;
 }
 
 canvas {
     border-radius: 7px;
+    margin-left: 2em;
 }
 
 h1 {
     color: white;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     letter-spacing: 30px;
 }
 
 h2 {
     color: rgb(255, 163, 163);
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 25px;
     letter-spacing: 10px;
 }
 
 h3 {
     color: rgb(255, 163, 163);
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 15px;
     letter-spacing: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+    html,
+    body {
+        background-color: rbg(10, 10, 50);
+        color: red;
+    }
 }
