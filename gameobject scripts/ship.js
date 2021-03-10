@@ -1,39 +1,39 @@
 // import
-import debug        from "../scripts/misc scripts/debug.js"
-import time         from "../scripts/misc scripts/time.js"
-import draw         from "../scripts/draw.js"
-import Image        from "../scripts/misc scripts/image.js"
-import Projectile   from "../scripts/misc scripts/projectile.js"
-import Point        from "../scripts/misc scripts/point.js"
-import Dimensions   from "../scripts/misc scripts/dimensions.js"
-import Laser        from "./laser.js"
-import Velocity     from "../scripts/misc scripts/velocity.js"
-import math         from "../scripts/misc scripts/math.js"
+import debug from "../scripts/misc scripts/debug.js"
+import time from "../scripts/misc scripts/time.js"
+import draw from "../scripts/draw.js"
+import Image from "../scripts/misc scripts/image.js"
+import Projectile from "../scripts/misc scripts/projectile.js"
+import Point from "../scripts/misc scripts/point.js"
+import Dimensions from "../scripts/misc scripts/dimensions.js"
+import Laser from "./laser.js"
+import Velocity from "../scripts/misc scripts/velocity.js"
+import math from "../scripts/misc scripts/math.js"
 import GameObject from "../scripts/misc scripts/gameObject.js"
 const canvas = document.querySelector("canvas")
 
 // define
-const ACCELERATION_AMOUNT   = 10 // ship acceleration amount in pixels/s/s
-const FRICTION_AMOUNT       = 0.1 // brake deceleration amount
+const ACCELERATION_AMOUNT = 10 // ship acceleration amount in pixels/s/s
+const FRICTION_AMOUNT = 0.1 // brake deceleration amount
 
 // ship module
 class Ship extends Projectile {
     constructor() {
         console.log("Ship constructor called.")
-        
+
         // set GameObject components
         super()
-        this.name       = "Ship"
-        this.point      = new Point(canvas.width/2, canvas.height/2)
-        this.velocity   = new Velocity(0, 0)
-        this.r          = 15
+        this.name = "Ship"
+        this.point = new Point(canvas.width / 2, canvas.height / 2)
+        this.velocity = new Velocity(0, 0)
+        this.r = 15
         this.dimensions = new Dimensions(1, 1)
-        this.a          = 10
-        this.image      = new Image("../assets/shipImage.png", "ship image", this.dim, true)
+        this.a = 10
+        this.image = new Image("../assets/shipImage.png", "ship image", this.dim, true)
 
         // set ship components
-        this.thrust     = false
-        this.brake      = false
+        this.thrust = false
+        this.brake = false
     }
 
     // methods
@@ -46,10 +46,9 @@ class Ship extends Projectile {
             debug.display("Braking...")
         }
     }
-    
+
     display() {
         if (this.blinkOn) {
-            console.log("display")
             super.display()
             if (!draw.drawImages)
                 draw.triangle(this.point, this.r, this.rotation)
@@ -74,9 +73,9 @@ class Ship extends Projectile {
     }
 
     drawExplosion() {
-        if (this.timer < .4) draw.circle(this.p, this.r*1.2, true, "yellow")
+        if (this.timer < .4) draw.circle(this.p, this.r * 1.2, true, "yellow")
         if (this.timer < .6) draw.circle(this.p, this.r, true, "orange")
-        if (this.timer < .8) draw.circle(this.p, this.r*0.8, true, "red")
+        if (this.timer < .8) draw.circle(this.p, this.r * 0.8, true, "red")
         draw.triangle(this.p, this.r - 2, this.rotation, "red", 1)
         draw.triangle(this.p, this.r - 7, this.rotation, "orange", 3)
         draw.triangle(this.p, this.r - 12, this.rotation, "yellow", 3)

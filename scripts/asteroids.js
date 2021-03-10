@@ -1,18 +1,18 @@
-import draw             from "./draw.js"
-import Ship             from "../gameobject scripts/ship.js"
-import { loadShipLives }     from "./stateManager.js"
-import Rock             from "../gameobject scripts/rock.js"
-import MousePointer     from "../gameobject scripts/mousePointer.js"
-import Image            from "./misc scripts/image.js"
-import Dimensions       from "./misc scripts/dimensions.js"
-import debug            from "./misc scripts/debug.js"
-import time             from "./misc scripts/time.js"
-import Point            from "./misc scripts/point.js"
-import { FIRING_RATE }  from "../gameobject scripts/laser.js"
-import inputManager     from "./inputManager.js"
-import stateManager     from "./stateManager.js"
+import draw from "./draw.js"
+import Ship from "../gameobject scripts/ship.js"
+import { loadShipLives } from "./stateManager.js"
+import Rock from "../gameobject scripts/rock.js"
+import MousePointer from "../gameobject scripts/mousePointer.js"
+import Image from "./misc scripts/image.js"
+import Dimensions from "./misc scripts/dimensions.js"
+import debug from "./misc scripts/debug.js"
+import time from "./misc scripts/time.js"
+import Point from "./misc scripts/point.js"
+import { FIRING_RATE } from "../gameobject scripts/laser.js"
+import inputManager from "./inputManager.js"
+import stateManager from "./stateManager.js"
 import collisionHandler from "./collisionHandler.js"
-import math             from "./misc scripts/math.js"
+import math from "./misc scripts/math.js"
 const canvas = document.querySelector("canvas")
 
 // Asteroids Game
@@ -21,12 +21,12 @@ class Game {
         console.log("Game constructor called.")
 
         // game objects
-        this.ship           = new Ship()
-        this.shipLives      = loadShipLives(3) // [n shipLife's]
-        this.lasers         = []
-        this.rocks          = []
+        this.ship = new Ship()
+        this.shipLives = loadShipLives(3) // [n shipLife's]
+        this.lasers = []
+        this.rocks = []
         this.asteroidBelt(6)
-        this.mousePointer   = new MousePointer()
+        this.mousePointer = new MousePointer()
     }
 
     /*********
@@ -36,7 +36,7 @@ class Game {
         this.handleInput()
         this.handleCollisions()
         time.tick()
-        // stateManager.states[2].update()
+            // stateManager.states[2].update()
         draw.fillBackground()
         this.mousePointer.update()
         this.ship.update()
@@ -45,6 +45,8 @@ class Game {
         this.updateLasers()
         this.wrapObjects()
         this.handleDelayTimers()
+        draw.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+        console.log(window.innerWidth)
     }
 
     /***************
@@ -54,7 +56,7 @@ class Game {
         var key = ""
         for (var i in inputManager.inputKeys) {
             key = inputManager.inputKeys[i]
-            switch(key.name) {
+            switch (key.name) {
                 case 'Enter':
                     if (key.pressed)
                         if (this.enterDelayTimer <= 0.0) {
@@ -71,19 +73,19 @@ class Game {
                         }
 
                     break
-                // accelerate on 'up' arrow key
+                    // accelerate on 'up' arrow key
                 case "ArrowUp":
                     if (key.pressed)
                         this.ship.thrust = true
                     else this.ship.thrust = false
                     break
-                // brake on 'down' arrow key
+                    // brake on 'down' arrow key
                 case "ArrowDown":
                     if (key.pressed)
                         this.ship.brake = true
                     else this.ship.brake = false
                     break
-                // rotate on arrow keys, respective to which key was pressed
+                    // rotate on arrow keys, respective to which key was pressed
                 case "ArrowLeft":
                     if (key.pressed) this.ship.rotateLeft()
                     break
@@ -106,7 +108,7 @@ class Game {
                     this.rocks[i].hit()
                 }
 
-            // collisions between lasers and rocks
+                // collisions between lasers and rocks
             for (var j in this.lasers) {
                 if (collisionHandler.distanceBetweenProjectiles(this.rocks[i], this.lasers[j]) < this.rocks[i].r + this.lasers[j].r) {
                     this.rocks[i].hit()
@@ -165,16 +167,14 @@ class Game {
     wrapObjects() {
         this.wrap(this.ship)
         this.lasers.forEach((laser) => this.wrap(laser))
-        this.rocks.forEach((rock)   => this.wrap(rock))
+        this.rocks.forEach((rock) => this.wrap(rock))
     }
 
     wrap(projectile) {
         var buffer = -projectile.radius
-        if      (projectile.p.x < buffer) { projectile.p.x = canvas.width - buffer; return true }
-        else if (projectile.p.x > canvas.width - buffer) { projectile.p.x = buffer; return true }
+        if (projectile.p.x < buffer) { projectile.p.x = canvas.width - buffer; return true } else if (projectile.p.x > canvas.width - buffer) { projectile.p.x = buffer; return true }
 
-        if      (projectile.p.y < buffer) { projectile.p.y = canvas.height - buffer; return true }
-        else if (projectile.p.y > canvas.height - buffer) { projectile.p.y = buffer; return true }
+        if (projectile.p.y < buffer) { projectile.p.y = canvas.height - buffer; return true } else if (projectile.p.y > canvas.height - buffer) { projectile.p.y = buffer; return true }
 
         return false
     }

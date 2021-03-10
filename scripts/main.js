@@ -5,7 +5,7 @@ const canvas = document.querySelector("canvas")
 
 // define
 var mousePosition = new Point()
-const FPS = 30
+const FPS = 60
 export default FPS
 
 /************

@@ -1,45 +1,54 @@
-html,
-body {
-    background-color: rgb(103, 137, 148);
-    color: white;
+html {
+    background-color: rgb(232, 238, 243);
+    color: rgb(29, 37, 48);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-shadow: 0 0 1em 0 rgb(0, 0, 0);
 }
 
-header,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
 canvas {
-    /* positioning: center */
-    display: flex;
-    justify-content: center;
-    text-align: left;
-}
-
-canvas {
+    margin-left: auto;
+    margin-right: auto;
+    /* BLACK MAGIC */
+    display: block;
+    width: 90%;
+    min-width: fit-content;
+    max-width: 600px;
+    height: 70%;
     border-radius: 7px;
-    margin-left: 2em;
+    align-content: center;
+    text-align: center;
+    background-color: rgba(101, 161, 163, .1);
 }
 
 h1 {
-    color: white;
     letter-spacing: 30px;
+    padding: 5px;
 }
 
 h2 {
-    color: rgb(255, 163, 163);
+    color: rgb(131, 75, 75);
     font-size: 25px;
     letter-spacing: 10px;
 }
 
 h3 {
-    color: rgb(255, 163, 163);
+    color: rgb(131, 185, 106);
     font-size: 15px;
     letter-spacing: 5px;
 }
 
+
+/* DARK MODE */
+
 @media (prefers-color-scheme: dark) {
-    html,
-    body {
-        background-color: rbg(10, 10, 50);
-        color: red;
+    html {
+        color: rgb(240, 240, 240);
+        background-color: rgb(29, 37, 48);
     }
 }
