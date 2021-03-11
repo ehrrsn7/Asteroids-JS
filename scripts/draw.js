@@ -83,6 +83,7 @@ var draw = {
 
         a += math.rad(90)
         if (color == "unspecified") color = this.color
+        context.fillStyle = "black"
 
         // draw a triangular ship
         context.strokeStyle = color
@@ -105,6 +106,19 @@ var draw = {
         )
         context.closePath()
         context.stroke()
+        context.fill()
+    },
+
+    star(p, r, color = "white") {
+        var fill = true
+        context.strokeStyle = color
+        if (fill) context.fillStyle = color
+        context.lineWidth = 1.5
+        context.beginPath()
+        context.arc(p.x, p.y, r, 0, math.rad(360), false)
+        context.closePath()
+        context.stroke()
+        if (fill) context.fill()
     },
 
     showBounding: false,

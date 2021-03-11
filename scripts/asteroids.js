@@ -1,19 +1,45 @@
 import draw from "./draw.js"
 import Ship from "../gameobject scripts/ship.js"
+import Star from "../gameobject scripts/star.js"
 import { loadShipLives } from "./stateManager.js"
 import Rock from "../gameobject scripts/rock.js"
-import MousePointer from "../gameobject scripts/mousePointer.js"
 import Image from "./misc scripts/image.js"
 import Dimensions from "./misc scripts/dimensions.js"
 import debug from "./misc scripts/debug.js"
 import time from "./misc scripts/time.js"
 import Point from "./misc scripts/point.js"
 import { FIRING_RATE } from "../gameobject scripts/laser.js"
-import inputManager from "./inputManager.js"
 import stateManager from "./stateManager.js"
 import collisionHandler from "./collisionHandler.js"
 import math from "./misc scripts/math.js"
 const canvas = document.querySelector("canvas")
+
+// state 'enum'
+const state_strings = [
+    "RESUME",
+    "PAUSE",
+    "MAIN_MENU",
+    "OPTIONS_MENU",
+    "HIGH_SCORES_MENU",
+    "QUIT"
+]
+
+const states = enumerator(state_strings)
+
+function displayState(state) {
+    var msg = `{${state} : ${state_strings[state]}}`
+    debug.log(msg)
+    return msg
+}
+
+function enumerator(list) {
+    var key_value_pair_map = {}
+    list.forEach((str_val, index) => {
+        key_value_pair_map[str_val] = index
+    })
+    return key_value_pair_map
+}
+
 
 // Asteroids Game
 class Game {
@@ -22,78 +48,69 @@ class Game {
 
         // game objects
         this.ship = new Ship()
-        this.shipLives = loadShipLives(3) // [n shipLife's]
+        this.shipLives = loadShipLives(4) // [n shipLife's]
         this.lasers = []
         this.rocks = []
-        this.asteroidBelt(6)
-        this.mousePointer = new MousePointer()
+        this.stars = []
+        for (let i = 0; i < 100; i++)
+            this.stars.push(new Star(canvas.width, canvas.height))
+        this.asteroidBelt(8)
+        Game.state = states.RESUME
     }
+
+    /**********
+     * STATICS
+     **********/
+    static state = states.PAUSE
+    static heldKeys = {}
 
     /*********
      * UPDATE
      *********/
     update() {
-        this.handleInput()
-        this.handleCollisions()
-        time.tick()
-            // stateManager.states[2].update()
         draw.fillBackground()
-        this.mousePointer.update()
-        this.ship.update()
-        this.rocks.forEach((rock) => rock.update())
-        for (var i in this.shipLives) this.shipLives[i].update()
-        this.updateLasers()
+
+        // handle states
+        debug.display(`${displayState(Game.state)}`, "gameState")
+        switch (Game.state) {
+            case states.RESUME:
+                this.handleCollisions()
+                this.stars.forEach((star) => star.update())
+                this.rocks.forEach((rock) => rock.update())
+                for (var i in this.shipLives) this.shipLives[i].update()
+                this.updateLasers()
+                this.ship.update()
+
+                break;
+
+            case states.PAUSE:
+                displayState(Game.state)
+                break;
+
+            default:
+                break;
+        }
+
+        // independent of states
+        this.handleInput()
+        time.tick()
         this.wrapObjects()
-        this.handleDelayTimers()
         draw.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-        console.log(window.innerWidth)
     }
 
     /***************
      * HANDLE INPUT
      ***************/
     handleInput() {
-        var key = ""
-        for (var i in inputManager.inputKeys) {
-            key = inputManager.inputKeys[i]
-            switch (key.name) {
-                case 'Enter':
-                    if (key.pressed)
-                        if (this.enterDelayTimer <= 0.0) {
-                            this.rocks.push(new Rock())
-                            this.enterDelayTimer = .175
-                        }
-                    break
-                case ' ':
-                    // fire on ' ' (space)
-                    if (key.pressed)
-                        if (this.laserDelayTimer <= 0.0) {
-                            this.lasers.push(this.ship.fire())
-                            this.laserDelayTimer = 1 / FIRING_RATE
-                        }
+        if (Game.heldKeys[" "]) this.fireLaser()
+        if (Game.heldKeys["ArrowLeft"]) this.ship.rotateLeft()
+        if (Game.heldKeys["ArrowRight"]) this.ship.rotateRight()
+        if (Game.heldKeys["ArrowUp"]) this.ship.thrust()
 
-                    break
-                    // accelerate on 'up' arrow key
-                case "ArrowUp":
-                    if (key.pressed)
-                        this.ship.thrust = true
-                    else this.ship.thrust = false
-                    break
-                    // brake on 'down' arrow key
-                case "ArrowDown":
-                    if (key.pressed)
-                        this.ship.brake = true
-                    else this.ship.brake = false
-                    break
-                    // rotate on arrow keys, respective to which key was pressed
-                case "ArrowLeft":
-                    if (key.pressed) this.ship.rotateLeft()
-                    break
-                case "ArrowRight":
-                    if (key.pressed) this.ship.rotateRight()
-                    break
-            }
-        }
+        if (Game.heldKeys[" "]) debug.display("{ }", "heldKey")
+        if (Game.heldKeys["ArrowLeft"]) debug.display("{ArrowLeft}", "heldKey")
+        if (Game.heldKeys["ArrowRight"]) debug.display("{ArrowRight}", "heldKey")
+        if (Game.heldKeys["ArrowUp"]) debug.display("{ArrowUp}", "heldKey")
     }
 
     /**
@@ -129,7 +146,7 @@ class Game {
 
         for (var i = 0; i < this.rocks.length; i++) {
             if (!this.rocks[i].alive) {
-                debug.display(`Splicing old rock: '${this.rocks[i].name}'`)
+                // debug.display(`Splicing old rock: '${this.rocks[i].name}'`)
                 var oldRock = this.rocks[i]
                 var newRocks = oldRock.split()
                 console.log(newRocks)
@@ -140,7 +157,7 @@ class Game {
             }
         }
 
-        debug.display(this.shipLives.length)
+        // debug.display(this.shipLives.length)
         if (!this.ship.alive) {
             this.ship = new Ship()
             if (this.shipLives.length > 0) this.shipLives.pop()
@@ -148,18 +165,6 @@ class Game {
         }
     }
     restart = false
-
-    /***
-     * FIRE
-     */
-    handleDelayTimers() {
-        if (this.laserDelayTimer > 0.0)
-            this.laserDelayTimer -= time.deltaTime
-        if (this.enterDelayTimer > 0.0)
-            this.enterDelayTimer -= time.deltaTime
-    }
-    laserDelayTimer = 0.0
-    enterDelayTimer = 0.0
 
     /**
      * WRAP
@@ -182,9 +187,15 @@ class Game {
     /**
      * LASERS
      */
+    fireLaser() {
+        if (!this.ship.laserDelayTimer > 0) {
+            this.lasers.push(this.ship.fire())
+                // debug.display(`asteroids.lasers.length{${this.lasers.length}}`, "lasersLength", false)
+        }
+    }
+
     updateLasers() {
-        for (var i = 0; i < this.lasers.length; i++)
-            this.lasers[i].update()
+        this.lasers.forEach((laser) => laser.update())
     }
 
     /**
@@ -194,13 +205,6 @@ class Game {
         for (var i = 0; i < n; i++) {
             this.rocks.push(new Rock())
         }
-    }
-
-    /**
-     * MOUSE POINTER
-     */
-    updateMousePosition(point) {
-        this.mousePointer.p = point
     }
 }
 

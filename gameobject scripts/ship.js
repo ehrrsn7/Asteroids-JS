@@ -10,11 +10,13 @@ import Laser from "./laser.js"
 import Velocity from "../scripts/misc scripts/velocity.js"
 import math from "../scripts/misc scripts/math.js"
 import GameObject from "../scripts/misc scripts/gameObject.js"
+import FPS from "../scripts/main.js"
 const canvas = document.querySelector("canvas")
 
 // define
-const ACCELERATION_AMOUNT = 10 // ship acceleration amount in pixels/s/s
+const ACCELERATION_AMOUNT = 100 // ship acceleration amount in pixels/s/s
 const FRICTION_AMOUNT = 0.1 // brake deceleration amount
+const LASER_DELAY = .1 // cannon delay rate in frames
 
 // ship module
 class Ship extends Projectile {
@@ -30,9 +32,9 @@ class Ship extends Projectile {
         this.dimensions = new Dimensions(1, 1)
         this.a = 10
         this.image = new Image("../assets/shipImage.png", "ship image", this.dim, true)
+        this.laserDelayTimer = 0
 
         // set ship components
-        this.thrust = false
         this.brake = false
     }
 
@@ -40,7 +42,7 @@ class Ship extends Projectile {
     update() {
         super.update()
         this.handleInvulnerability()
-        this.accelerate(this.rotation, ACCELERATION_AMOUNT, this.thrust)
+        this.handleLaserDelay()
         if (this.brake) {
             this.applyFriction(FRICTION_AMOUNT)
             debug.display("Braking...")
@@ -60,7 +62,12 @@ class Ship extends Projectile {
         super.handleInput()
     }
 
+    thrust() {
+        this.accelerate(this.rotation, ACCELERATION_AMOUNT)
+    }
+
     fire() {
+        this.laserDelayTimer = LASER_DELAY + 1 // disable cannon for 'x' frames
         return new Laser(this.p.x, this.p.y, this.v.dx, this.v.dy, this.rotation, this.r)
     }
 
@@ -95,6 +102,16 @@ class Ship extends Projectile {
         else if (y < rate * 2) return true
         else if (y > 0) y -= rate
         else return true
+    }
+
+    handleLaserDelay() {
+        debug.display("handleLaserDelay()", "functionalLaserDelay()Msg")
+
+        if (this.laserDelayTimer >= 0) {
+            debug.display(`${this.laserDelayTimer-1}`, "laserDelayTimer")
+            this.laserDelayTimer -= time.deltaTime
+        }
+        if (this.laserDelayTimer <= 1) this.laserDelayTimer = 0
     }
 }
 

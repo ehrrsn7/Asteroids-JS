@@ -7,8 +7,8 @@ const collisionManager = {
     },
 
     hasCollided(proj1, proj2) {
-        debug.display(proj1.name + " collided with " + proj2 + " name.")
-        return ( this.distanceBetweenProjectiles(proj1, proj2) > proj1.r + proj2.r)
+        // debug.display(proj1.name + " collided with " + proj2 + " name.")
+        return (this.distanceBetweenProjectiles(proj1, proj2) > proj1.r + proj2.r)
     }
 }
 

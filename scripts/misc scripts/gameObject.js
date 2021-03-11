@@ -1,23 +1,22 @@
 // import
-import Point        from "./point.js"
-import Dimensions   from "./dimensions.js"
-import inputManager from "../inputManager.js"
+import Point from "./point.js"
+import Dimensions from "./dimensions.js"
 import Time from "./time.js"
-import draw         from "../draw.js"
+import draw from "../draw.js"
 import debug from "./debug.js"
 
 /************
  * @abstract
  ************/
 class GameObject {
-    constructor(x=0, y=0, w=0, h=0, r=0, a=0) {
-        this.name   = "unknown GameObject"
-        this.p      = new Point(x, y)
-        this.dim    = new Dimensions(w, h)
-        this.r      = r // radius
-        this.a      = a // angle (radians)
-        this.alive  = true
-        this.timer  = 0 // death timer
+    constructor(x = 0, y = 0, w = 0, h = 0, r = 0, a = 0) {
+        this.name = "unknown GameObject"
+        this.p = new Point(x, y)
+        this.dim = new Dimensions(w, h)
+        this.r = r // radius
+        this.a = a // angle (radians)
+        this.alive = true
+        this.timer = 0 // death timer
     }
 
     // update (advance)
@@ -30,7 +29,7 @@ class GameObject {
     // display (draw)
     display() {
         this.showBounding()
-        debug.log(this.name + ".display() called")
+            // debug.log(this.name + ".display() called")
     }
 
     boundingColor = "green"
@@ -45,7 +44,7 @@ class GameObject {
 
     // handle input
     handleInput() {
-        
+
     }
 
     // handle death timer
@@ -66,17 +65,17 @@ class GameObject {
     // fixed update? also implement tick/render if so
 
     // properties (getters/setters)
-    get point()             { return this.p         }
-    set point(new_p)        { this.p = new_p        }
+    get point() { return this.p }
+    set point(new_p) { this.p = new_p }
 
-    get radius()            { return this.r         }
-    set radius(new_r)       { this.r = new_r        }
+    get radius() { return this.r }
+    set radius(new_r) { this.r = new_r }
 
-    get angleRadians()      { return this.a         }
-    set angleRadians(new_a) { this.a = new_a        }
+    get angleRadians() { return this.a }
+    set angleRadians(new_a) { this.a = new_a }
 
-    get dimensions()        { return this.dim       }
-    set dimensions(new_dim) { this.dim = new_dim    }
+    get dimensions() { return this.dim }
+    set dimensions(new_dim) { this.dim = new_dim }
 }
 
 export default GameObject

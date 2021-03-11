@@ -1,9 +1,10 @@
+import debug from "./debug.js"
 import math from "./math.js"
 
 class Velocity {
-    constructor(dx=0, dy=0) {
-        this.dx = dx, 
-        this.dy = dy
+    constructor(dx = 0, dy = 0) {
+        this.dx = dx,
+            this.dy = dy
     }
 
     add(dv) {
@@ -11,8 +12,9 @@ class Velocity {
         this.dy += dv.dy
     }
 
-    forward(angle, magnitude=1) {
-        if (angle == NaN) angle = Math.atan2(this.dx, this.dy)
+    forward(angle, magnitude = 1) {
+        debug.display(`${magnitude}`, "angle")
+        if (isNaN(angle)) angle = Math.atan2(this.dx, this.dy)
         angle += math.rad(90)
         return new Velocity(
             magnitude * Math.cos(angle),

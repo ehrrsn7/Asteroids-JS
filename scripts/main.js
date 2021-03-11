@@ -19,25 +19,29 @@ setInterval(() => {
     if (asteroids.restart == true) restart()
 })
 
-
 /****************
  * INPUT MANAGER
  ****************/
-import inputManager from "./inputManager.js"
 
 // keyboard input
-document.addEventListener("keydown", inputManager.keyDown)
+document.addEventListener("keydown", keyDown)
 
 // key up (remove keys)
-document.addEventListener("keyup", inputManager.keyUp)
+document.addEventListener("keyup", keyUp)
 
-// mouse click
-document.addEventListener("mousedown", inputManager.onClick)
+function keyDown(event) {
+    Game.heldKeys[event.key] = true
+        // debug.display(`heldKeys {${event.key}} <- true`)
+    if (event.key.toLowerCase() == "r") restart()
+    if (event.key.toLowerCase() == "d") debug.toggleDebug()
+}
 
-// mouse movement
-document.addEventListener("mousemove", inputManager.mouseMove)
+function keyUp(event) {
+    Game.heldKeys[event.key] = false
+        // debug.display(`heldKeys {${event.key}} <- false`)
+}
 
 export function restart() {
-    debug.display("Restarting game...")
+    debug.display("restarting game", "user feedback", "h3")
     asteroids = new Game()
 }

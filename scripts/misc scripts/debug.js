@@ -1,18 +1,34 @@
 const debugEl = document.getElementById("debug")
 
+function addDOMTextElement(text, elementID, elementType) {
+    console.warn("Creating new text element")
+    let newElement = document.createElement(elementType)
+    newElement.innerHTML = `[${elementID}] ${text}`
+    newElement.id = elementID
+    document.body.appendChild(newElement)
+}
+
+let insertString = (originalString, stringToAdd, index) => (
+    originalString.slice(0, index) +
+    stringToAdd +
+    originalString.slice(index)
+)
+
+
 const debug = {
     DEBUG: false,
     toggleDebug: function() {
         this.DEBUG = !this.DEBUG
-        if (this.DEBUG) console.log("DEBUG enabled.")
-        else            console.log("DEBUG disabled.")
-
-        if (this.DEBUG) debugEl.style.visibility = "visible"
-        else            debugEl.style.visibility = "hidden"
-
-        if (this.DEBUG) this.display("Debug:", "user feedback")
+        if (this.DEBUG) {
+            console.log("DEBUG enabled.")
+            debugEl.style.visibility = "visible"
+            this.display("Debug:", "feedback", "h2")
+        } else {
+            console.log("DEBUG disabled.")
+            debugEl.style.visibility = "hidden"
+        }
     },
-    log: function(txt, debug_msg=true) {
+    log: function(txt, debug_msg = true) {
         var text = " "
         if (debug_msg) text = "debug: "
         text += txt + " "
@@ -21,24 +37,19 @@ const debug = {
     update: function() {
 
     },
-    display: function(text, id="user feedback") {
-        if (this.DEBUG) {
-            // get element
-            let element = document.getElementById(id)
+    display: function(text, id = "user feedback", elementType = "h3", insert = false) {
+        if (!this.DEBUG) return
 
-            // if element doesn't exist, create one
-            let x = typeof(element)
-            if (x == undefined || x == null || x == NaN) {
-                console.warn("Creating new element: ", text, id)
-                element = document.createElement("h3")
-                element.appendChild(document.createTextNode(text))
-                document.appendChild(element)
-                return
-            }
+        // get element
+        let element = document.getElementById(id)
 
-            // display text
-            element.innerHTML = text
-        }
+        // if element doesn't exist, create one
+        if (element === null) addDOMTextElement(text, id, elementType)
+
+        // display text
+        else element.innerHTML = `[${element.id}]: ${text}`
+
+        debugEl.appendChild(element)
     }
 }
 

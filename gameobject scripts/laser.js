@@ -5,18 +5,18 @@ import time from "../scripts/misc scripts/time.js"
 import Projectile from "../scripts/misc scripts/projectile.js"
 import Velocity from "../scripts/misc scripts/velocity.js"
 
-const LASER_SPEED = 10  // laser speed in pixels/second
-const LASER_LIFE  = 1 // laser expiration time in seconds
+const LASER_SPEED = 20 // laser speed in pixels/second
+const LASER_LIFE = 1 // laser expiration time in seconds
 
 class Laser extends Projectile {
     constructor(x, y, dx, dy, a, r) {
         // console.log("Laser fired")
         super()
-        this.name       = "laser"
-        this.angle      = a + math.rad(90)
-        this.radius     = r / 10
-        this.timer      = LASER_LIFE
-        
+        this.name = "laser"
+        this.angle = a + math.rad(90)
+        this.radius = r / 10
+        this.timer = LASER_LIFE
+
         // 'fire'
         console.log(a)
         this.point.x = x + (r * Math.cos(this.angle))
@@ -30,7 +30,7 @@ class Laser extends Projectile {
     }
 
     display() {
-        draw.circle(this.p, this.r, true)
+        draw.circle(this.p, this.r, true, "orange")
     }
 }
 

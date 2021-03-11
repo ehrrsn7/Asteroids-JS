@@ -5,9 +5,9 @@ import Point from "./misc scripts/point.js"
 
 // helper class
 class state {
-    constructor(name, state) {
-        this.name   = name
-        this.state  = state
+    constructor(name, state_i) {
+        this.name = name
+        this.state = state_i
     }
 }
 
@@ -17,9 +17,9 @@ class Scene {
     // (all states must have a scene to work with)
     constructor() {
         this.backgroundImage = new Image(
-            "../assets/stars.png", 
-            "background image", 
-            new Dimensions(0,0),
+            "../assets/stars.png",
+            "background image",
+            new Dimensions(0, 0),
             true)
     }
 
@@ -45,27 +45,27 @@ class Resume extends Scene {
 }
 
 class Pause extends Scene {
-    
+
 }
 
 class MainMenu extends Scene {
 
 }
 
-class SettingsState  extends Scene {
+class SettingsState extends Scene {
 
 }
 
 
 // state manager module
 const stateManager = {
-    currentState : 0,
+    currentState: 0,
     get state() { return this.states[this.currentState] },
-    states : [
-        new state("resume",         new Resume()),
-        new state("pause",          new Pause()),
-        new state("main menu",      new MainMenu()),
-        new state("settings menu",  new SettingsState())
+    states: [
+        new state("resume", new Resume()),
+        new state("pause", new Pause()),
+        new state("main menu", new MainMenu()),
+        new state("settings menu", new SettingsState())
     ]
 }
 
