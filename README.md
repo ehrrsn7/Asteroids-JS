@@ -8,4 +8,4 @@ https://youtu.be/H9CSWMxJx84
 
 This is the source code for the app. 
 The full site is up on the Django version of this site found at
-https://github.com/Asteroids
+https://github.com/ehrrsn7/Asteroids
