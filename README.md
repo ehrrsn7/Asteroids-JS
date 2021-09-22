@@ -6,6 +6,6 @@ Just experimenting with code to make Asteroids (Atari) using JavaScript.
 Since I don't know JavaScript at all, I used this tutorial for help.
 https://youtu.be/H9CSWMxJx84
 
-This is the source code for the app. 
-The full site is up on the Django version of this site found at
+This is the source code for the app.
+The Django version of this site found at
 https://github.com/ehrrsn7/Asteroids
