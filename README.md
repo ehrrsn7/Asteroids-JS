@@ -1,6 +1,6 @@
 # asteroids
 
-GO TO https://ehrrsn7.github.io/Asteroids/ TO RUN THE APP.
+GO TO https://ehrrsn7.github.io/Asteroids-JS/ TO RUN THE APP.
 
 Just experimenting with code to make Asteroids (Atari) using JavaScript.
 Since I don't know JavaScript at all, I used this tutorial for help.
